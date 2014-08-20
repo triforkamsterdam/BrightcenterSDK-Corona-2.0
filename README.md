@@ -1,8 +1,8 @@
 BrightcenterSDK-Corona 2.0
 =======================
 
-This SDK makes it easier to communicate with Brightcenter. It uses an appswitch to retrieve the student that is logged in. developers can use www.brightcenter.nl/dashboard/createSdkUrl to create a test link. If you open the generated link in your browser, your app will be openened.
-When the BrightcenterApp is finishid it'll open your app in the same way. 
+This SDK makes it easier to communicate with Brightcenter. It uses an appswitch to retrieve the student that is logged in. developers can use www.brightcenter.nl/dashboard/createSdkUrl to create a test link. If you open the generated link in your browser on your simulator/device, your app will be openened.
+When the BrightcenterApp is finished it'll open your app in the same way. 
 
 ### Download the project
 To use this SDK you need to download this project. You'll need to at least include  brightcenterController.lua into your own project by just adding them to your project folder.
@@ -15,7 +15,7 @@ controller = require("brightcenterController")
 before you do anything with the controller you should set controller.sceneToGoTo and controller.appUrl.
 controller.sceneToGoTo is the scene you want to load after the appswitch is made. controller.appUrl has to be the bundlescheme of your app as seen in your build.settings. IMPORTANT!: you'll need to change your CFBundleURLSchemes to something unique that corresponds to your app, otherwise it won't work.
 
-the controller has everything you need to post results to the server and retrieve students
+the controller has everything you need to post results to the server, retrieve students and retrieve results.
 If you open the app using the link, the student will automatically be loaded into the controller
 You can acces it by using controller.student.firstName for example.
 
@@ -24,8 +24,8 @@ To get the results of a student you can use the following:
 ```lua
 controller.loadResults([assessmentId], [callbackfunction])
 ```
+The callback function is called when the results are finished loading. In this callback or after it you can acces the results by doing the following:
 
-to acces the results you can use the following:
 ```lua
 controller.results[1].score --the score
 controller.results[1].questionId -- the id of the question
@@ -50,7 +50,7 @@ This method returns a string if something went wrong, so you can print the funct
 
 -`duration` should be the duration in seconds as an integer
 
--`completionStatus` should be either "COMPLETED" or "INCOMPLETE"
+-`completionStatus` should be either "COMPLETED" or "INCOMPLETE", you can use controller.completionStatusComplete and controller.completionStatusIncomplete to make sure you send the right values
 
 ###sidenotes
 

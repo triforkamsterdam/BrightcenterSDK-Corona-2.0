@@ -22,7 +22,8 @@ local callbackvar = callback
 
 
 local function postResult()
-    print(controller.postResult("2c62d592-f91c-4717-acf1-d51b1d0251a2", "T", 5, 10, "COMPLETED"))
+    print(controller.postResult("2c62d592-f91c-4717-acf1-d51b1d0251a2", "T", 5, 10, controller.completionStatusCompleted))
+    print(controller.postResult("2c62d592-f91c-4717-acf1-d51b1d0251a2", "K", 2, 10, controller.completionStatusIncomplete))
     controller.loadResults("2c62d592-f91c-4717-acf1-d51b1d0251a2", callbackvar)
 end
 

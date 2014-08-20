@@ -17,9 +17,13 @@ controller.student.lastName = ""
 controller.sceneToGoTo = ""
 controller.appUrl = ""
 
+controller.completionStatusCompleted = "COMPLETED"
+controller.completionStatusIncomplete = "INCOMPLETE"
+
 --this function extracts the student from the incoming url
 local function getStudentFromUrl(url)
 	local data = string.gsub( url, ".*//data/", "")
+	data = string.gsub( data, "/cookie/.*", "")
 	data = mime.unb64(data)
 	data = json.decode(data)
 	return data
@@ -43,7 +47,6 @@ end
 
 --This function can be used to post a result using a cookie
 local function postResult(assessmentId, questionId, score, duration, completionStatus)
-	print("in post result")
 	if(controller.cookie == "") then
 		return "error: cookie cannot be nil, are you sure a student is picked"
 	end
@@ -65,7 +68,6 @@ local function postResult(assessmentId, questionId, score, duration, completionS
 	if (questionId == nil) then
 		return "error: value questionId cannot be nil"
 	end
-	print("after checks")
 	
 	--callback: print response, only prints when there is a error
 	function networkLisenerPostResult(event)
@@ -93,20 +95,17 @@ local function postResult(assessmentId, questionId, score, duration, completionS
 	local resultUrl = baseUrl .. "/assessment/" .. assessmentId .. "/student/" .. controller.student.personId .. "/assessmentItemResult/" .. questionId
 	network.request( resultUrl, "POST", networkLisenerPostResult, params)
 
-	print("call is made")
 end
 
 --[[
 Loads the results of a student for an assessment and puts them in a global variable called results
 --]]
 function loadResults(assessmentId, customCallBack)
-	print("downloading results")
 	--callback: gets the results and puts them in a variable.
 	function networkListenerGetResults(event)
 		if ( event.isError ) then
 			print "something went wrong with fetching the results"
 		else
-			print("callback succes: ".. event.response )
 			local string = json.decode(event.response)
 			controller.results = string
 			customCallBack()
