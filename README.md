@@ -1,7 +1,10 @@
 BrightcenterSDK-Corona 2.0
 =======================
 
-This SDK makes it easier to communicate with Brightcenter. It uses an appswitch to retrieve the student that is logged in. developers can use www.brightcenter.nl/dashboard/createSdkUrl to create a test link. If you open the generated link in your browser on your simulator/device, your app will be openened.
+This SDK makes it easier to communicate with Brightcenter. It uses an appswitch to retrieve the student that is logged in.
+
+###Register your appUrl
+When you register or edit an assessment you can change your appUrl. your appUrl needs to be the same as your CFBundleURLSchemes. If you register your appUrl you can generate a test link on: www.brightcenter.nl/dashboard/createSdkUrl . There you can select your app and a student and your link will be generated. If you open this link on a device or simulator your app will be opened.
 When the BrightcenterApp is finished it'll open your app in the same way. 
 
 ### Download the project
@@ -51,6 +54,9 @@ This method returns a string if something went wrong, so you can print the funct
 -`duration` should be the duration in seconds as an integer
 
 -`completionStatus` should be either "COMPLETED" or "INCOMPLETE", you can use controller.completionStatusComplete and controller.completionStatusIncomplete to make sure you send the right values
+
+###Opening the BrightcenterApp
+This function is not available yet!
 
 ###sidenotes
 
