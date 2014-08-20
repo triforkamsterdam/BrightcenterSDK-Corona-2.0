@@ -6,7 +6,7 @@ local controller = {}
 local storyboard = require "storyboard"
 local mime=require("mime")
 local json = require("json")
-local baseUrl = "http://localhost:8080/dashboard/api"
+local baseUrl = "https://www.brightcenter.nl/dashboard/api"
 
 controller.cookie = ""
 controller.student = {}
