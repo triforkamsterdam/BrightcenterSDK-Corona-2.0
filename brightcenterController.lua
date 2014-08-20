@@ -6,7 +6,7 @@ local controller = {}
 local storyboard = require "storyboard"
 local mime=require("mime")
 local json = require("json")
-local baseUrl = "http://www.brightcenter.nl/dashboard/api"
+local baseUrl = "http://localhost:8080/dashboard/api"
 
 controller.cookie = ""
 controller.student = {}
@@ -16,6 +16,7 @@ controller.student.firstName = ""
 controller.student.lastName = ""
 controller.sceneToGoTo = ""
 controller.appUrl = ""
+controller.assessmentIdFromUrl = ""
 
 controller.completionStatusCompleted = "COMPLETED"
 controller.completionStatusIncomplete = "INCOMPLETE"
@@ -33,15 +34,21 @@ end
 local function getCookieFromUrl(url)
 	local cookie = url 
 	cookie = string.gsub(cookie, ".*://data/.*/cookie/", "")
+	cookie = string.gsub(cookie, "/assessmentId/.*", "")
 	return cookie
 end
 
+local function getAssessmentIdFromUrl(url)
+	local assessmentId = string.gsub(url, ".*/assessmentId/", "")
+	return assessmentId
+end
+
 --this function opens the brightcenter app
-local function openBrightcenterApp()
+local function openBrightcenterApp(assessmentId)
 	if(controller.appUrl == "") then
 		return "Error: AppUrl cannot be empty"
 	end
-	system.openURL( "brightcenterApp://protocolName/" .. controller.appUrl )
+	system.openURL( "brightcenterApp://protocolName/" .. controller.appUrl .. "/assessmentId/" .. assessmentId  )
 end
 
 
@@ -129,8 +136,10 @@ local function onSystemEvent( event )
 	if event.type == "applicationOpen" and event.url then
 		local student = controller.getStudentFromUrl(event.url)
 		local cookie = controller.getCookieFromUrl(event.url)
+		local assessmentId = controller.getAssessmentIdFromUrl(event.url)
 		controller.cookie = cookie
-		controller.student = student	
+		controller.student = student
+		controller.assessmentIdFromUrl = assessmentId	
 		storyboard.gotoScene(controller.sceneToGoTo)
 	end
 end
@@ -142,5 +151,6 @@ controller.openBrightcenterApp = openBrightcenterApp
 controller.postResult = postResult
 controller.getCookieFromUrl = getCookieFromUrl
 controller.loadResults = loadResults
+controller.getAssessmentIdFromUrl = getAssessmentIdFromUrl
 
 return controller

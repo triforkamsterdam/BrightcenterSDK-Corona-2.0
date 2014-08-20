@@ -36,7 +36,10 @@ end
 
 
 
-local brightcenterBeforeSequence = controller.openBrightcenterApp
+local function openBCApp()
+	controller.openBrightcenterApp("987-654-321")
+end
+local brightcenterBeforeSequence = openBCApp
 local postResult = controller.postResult
 
 controller.sceneToGoTo = "BCTestSceneAfterPick"
