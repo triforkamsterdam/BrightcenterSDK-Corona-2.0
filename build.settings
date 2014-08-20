@@ -1,0 +1,18 @@
+settings = {
+	orientation = {
+	default = { "portrait" }
+	},
+
+	iphone = {
+		plist = {
+			UIApplicationExitsOnSuspend = false,
+			CFBundleURLTypes ={ 
+				{
+					CFBundleURLSchemes = {
+						"brightcenterAppClientCorona",
+					}
+				}
+			}
+		}
+	}
+}
