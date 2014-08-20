@@ -62,7 +62,7 @@ iphone = {
 			CFBundleURLTypes ={ 
 				{
 					CFBundleURLSchemes = {
-						"brightcenterAppClientCorona",
+						"yourschemename",
 					}
 				}
 			}
