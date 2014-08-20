@@ -48,6 +48,12 @@ local function openBrightcenterApp(assessmentId)
 	if(controller.appUrl == "") then
 		return "Error: AppUrl cannot be empty"
 	end
+	if(assessmentId == "")then
+		return "Error: AssessmentId cannot be empty"
+	end
+	if(assessmentId == nil)then
+		return "Error: AssessmentId cannot be nil"
+	end
 	system.openURL( "brightcenterApp://protocolName/" .. controller.appUrl .. "/assessmentId/" .. assessmentId  )
 end
 
