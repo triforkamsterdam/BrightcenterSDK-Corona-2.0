@@ -28,12 +28,17 @@ local function postResult()
     print("AssessmentId from url: " .. controller.assessmentIdFromUrl)
 end
 
+local function openBCAppWithoutAssessment()
+    controller.openBrightcenterApp("")
+end
+
 
 local function openBCApp()
     controller.openBrightcenterApp("987-654-321")
 end
 local buttonClicked = openBCApp
 local postResultButtonClicked = postResult
+local loadAppWithoutAssessmentButtonClicked = openBCAppWithoutAssessment
 
 
 function scene:createScene( event )
@@ -59,6 +64,15 @@ function scene:createScene( event )
         onRelease = postResultButtonClicked,
         x = 300,
         y = 700
+    }
+
+    local loadWithoutAssessmentButton = widget.newButton{
+        label = "load without assessment",
+        emboss = true,
+        fontSize = 20,
+        onRelease = loadAppWithoutAssessmentButtonClicked,
+        x = 300,
+        y = 800
     }
 
 

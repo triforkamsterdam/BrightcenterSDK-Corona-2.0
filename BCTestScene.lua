@@ -9,7 +9,7 @@ local group = {}
 local firstNameText = {}
 local lastNameText = {}
 local idText = {}
-
+local buttonGroup = {}
 
 local brightcenterbutton
 local postResultButton
@@ -28,18 +28,31 @@ function createStudentLabels(group)
 	group:insert(idText)
 end
 
+local function openBCApp()
+	print("openeing")
+	controller.openBrightcenterApp("987-654-321")
+end
+local brightcenterBeforeSequence = openBCApp
+
+local function onOrientationChange(e)
+
+	if( storyboard.getCurrentSceneName( ) == "BCTestScene") then
+		print( "orientation changed " .. e.type)
+		print( display.actualContentHeight )
+		print( display.actualContentWidth )
+		display.remove( buttonGroup )
+		buttonGroup = controller.createBrightcenterButton(e.type, "123-456-789")
+	end
+end
+
+Runtime:addEventListener( "orientation", onOrientationChange )
+
 function setStudentLabels(student)
 	firstNameText.text = student.firstName
 	lastNameText.text = student.lastName
 	idText.text = student.personId
 end
 
-
-
-local function openBCApp()
-	controller.openBrightcenterApp("987-654-321")
-end
-local brightcenterBeforeSequence = openBCApp
 local postResult = controller.postResult
 
 controller.sceneToGoTo = "BCTestSceneAfterPick"
@@ -69,10 +82,12 @@ end
 scene:addEventListener( "createScene", scene )
 
 function scene:willEnterScene( event )
+	display.setStatusBar( display.HiddenStatusBar )
+	display.setDefault("background", 0.5, 0.5, 0.5)
   	group = self.view
   	createStudentLabels(group)
+  	buttonGroup = controller.createBrightcenterButton(system.orientation, "123-456-789")
 
-  	display.setDefault( "background", 1);
    	brightcenterbutton = widget.newButton{
 		label = "Open brightcenter app!",
 		emboss = true,
@@ -101,6 +116,7 @@ scene:addEventListener( "willEnterScene", scene )
 function scene:didExitScene( event )
 	print( "did exit scene" )
 	storyboard.purgeScene( "BCTestScene" )
+	display.remove( buttonGroup )
 end
 scene:addEventListener( "didExitScene", scene )
 

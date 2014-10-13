@@ -6,6 +6,7 @@ local controller = {}
 local storyboard = require "storyboard"
 local mime=require("mime")
 local json = require("json")
+local widget = require( "widget" )
 local baseUrl = "https://www.brightcenter.nl/dashboard/api"
 
 controller.cookie = ""
@@ -48,13 +49,79 @@ local function openBrightcenterApp(assessmentId)
 	if(controller.appUrl == "") then
 		return "Error: AppUrl cannot be empty"
 	end
-	if(assessmentId == "")then
-		return "Error: AssessmentId cannot be empty"
-	end
 	if(assessmentId == nil)then
-		return "Error: AssessmentId cannot be nil"
+		assessmentId = ""
 	end
 	system.openURL( "brightcenterApp://protocolName/" .. controller.appUrl .. "/assessmentId/" .. assessmentId  )
+end
+
+--creates an brightcenterbutton
+function createBrightcenterButton(orientation, assessmentId)
+	local posX = 0
+	local posY = 0
+	local x = 0
+	local y = 0
+	if(orientation == "landscapeLeft") then
+		x = display.contentWidth - 25
+		y = 50
+		posX = display.contentWidth - 55
+		posY = 55
+	end
+
+	if(orientation == "landscapeRight") then
+		x = 25
+		y = display.contentHeight
+		posX = 55
+		posY = display.contentHeight - 55
+	end
+
+	if(orientation == "portrait") then
+		x = display.contentWidth - 25
+		y = display.contentHeight
+		posX = display.contentWidth - 55
+		posY = display.contentHeight - 55
+	end
+
+	if(orientation == "portraitUpsideDown") then
+		x = 25
+		y = 55
+		posX = 55 
+		posY = 55
+	end
+
+	local function action()
+		controller.openBrightcenterApp(assessmentId)
+	end
+	local buttonGroup = display.newGroup()
+	local button = widget.newButton{
+		label = "",
+		x = x,
+		y = y,
+		shape = "roundedRect",
+		width = 240,
+		height = 240,
+		cornerRadius = 120,
+		fillColor = { default={ 1, 1, 1, 0.01 }, over={ 1, 0.1, 0.7, 0 } },
+		onEvent = action
+	}
+
+	local outerCircle = display.newCircle( x, y - 25, 120 )
+	outerCircle:setFillColor( 1 )
+	local circle = display.newCircle( posX, posY, 40 )
+	circle:setFillColor( 244 / 255, 126 / 255, 43 / 255)
+	local circle1 = display.newCircle( posX, posY, 30 )
+	circle1:setFillColor( 1 )
+	local circle2 = display.newCircle( posX, posY, 20 )
+	circle2:setFillColor( 244 / 255, 126 / 255, 0.43 / 255 )
+	local circle3 = display.newCircle( posX, posY, 10 )
+	circle3:setFillColor( 1 )
+	buttonGroup:insert(outerCircle)
+	buttonGroup:insert(circle)
+	buttonGroup:insert(circle1)
+	buttonGroup:insert(circle2)
+	buttonGroup:insert(circle3)
+	buttonGroup:insert(button)
+	return buttonGroup
 end
 
 
@@ -158,5 +225,6 @@ controller.postResult = postResult
 controller.getCookieFromUrl = getCookieFromUrl
 controller.loadResults = loadResults
 controller.getAssessmentIdFromUrl = getAssessmentIdFromUrl
+controller.createBrightcenterButton = createBrightcenterButton
 
 return controller

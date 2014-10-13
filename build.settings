@@ -6,6 +6,7 @@ settings = {
 	iphone = {
 		plist = {
 			UIApplicationExitsOnSuspend = false,
+			CFBundleShortVersionString = "1.0",
 			CFBundleURLTypes ={ 
 				{
 					CFBundleURLSchemes = {
