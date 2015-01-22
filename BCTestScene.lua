@@ -72,6 +72,14 @@ local function handlePostButtonEvent(event)
 	end
 end
 
+local function handleUrlTestEvent(event)
+	print("handleurl")
+	if("ended" == event.phase) then
+		print("handle url:")
+		controller.handleUrl("testapp://?data=eyJsYXN0TmFtZSI6IkJvbm5pPz9yPz8/Pz8/P1x1MDA5OT9cdTAwOTc/XHUwMDkzPz8/Pz8/Pz8/Pz9cdTAwOTM/Pz9cdTAwOERvIiwicGVyc29uSWQiOiI1MmIzMGI0YjMwMDQ3Y2Y5ZGVkOThjNzUiLCJmaXJzdE5hbWUiOiJNYXgifQ**&cookie=50B8AEB465A7A87FA696A1D53B7ECD94&assessmentId=a0f6c519-8bdc-4345-9443-0b22ecfc3809 ")
+	end
+end
+
 function scene:createScene( event )
    local group = self.view
 --   if connector.username ~= nil then
@@ -104,6 +112,15 @@ function scene:willEnterScene( event )
 		onEvent = handlePostButtonEvent,
 		x = 300,
 		y = 500
+	}
+
+	postResultButton = widget.newButton{
+		label = "handle url test",
+		emboss = true,
+		fontSize = 20,
+		onEvent = handleUrlTestEvent,
+		x = 300,
+		y = 600
 	}
 
 	group:insert(brightcenterbutton)

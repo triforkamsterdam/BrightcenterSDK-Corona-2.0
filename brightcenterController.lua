@@ -22,25 +22,36 @@ controller.assessmentIdFromUrl = ""
 controller.completionStatusCompleted = "COMPLETED"
 controller.completionStatusIncomplete = "INCOMPLETE"
 
+local function handleUrl(url)
+	controller.cookie = controller.getCookieFromUrl(url)
+	controller.student = controller.getStudentFromUrl(url)
+	controller.assessmentIdFromUrl = controller.getAssessmentIdFromUrl(url)	
+end
+
+
 --this function extracts the student from the incoming url
 local function getStudentFromUrl(url)
-	local data = string.gsub( url, ".*//data/", "")
-	data = string.gsub( data, "/cookie/.*", "")
+	local data = string.gsub( url, ".*data=", "")
+	data = string.gsub( data, "&cookie=.*", "")
+	data = string.gsub(data, "*", "=")
 	data = mime.unb64(data)
 	data = json.decode(data)
+	print( "student: " .. data.firstName .. " " .. data.lastName )
 	return data
 end
 
 --This function extracts the cookie from the incoming url
 local function getCookieFromUrl(url)
 	local cookie = url 
-	cookie = string.gsub(cookie, ".*://data/.*/cookie/", "")
-	cookie = string.gsub(cookie, "/assessmentId/.*", "")
+	cookie = string.gsub(cookie, ".*&cookie=", "")
+	cookie = string.gsub(cookie, "&assessmentId.*", "")
+	print("cookie: " .. cookie)
 	return cookie
 end
 
 local function getAssessmentIdFromUrl(url)
-	local assessmentId = string.gsub(url, ".*/assessmentId/", "")
+	local assessmentId = string.gsub(url, ".*&assessmentId=", "")
+	print("assessmentId: " .. assessmentId)
 	return assessmentId
 end
 
@@ -52,7 +63,7 @@ local function openBrightcenterApp(assessmentId)
 	if(assessmentId == nil)then
 		assessmentId = ""
 	end
-	system.openURL( "brightcenterApp://protocolName/" .. controller.appUrl .. "/assessmentId/" .. assessmentId  )
+	system.openURL( "brightcenterApp://?protocolName=" .. controller.appUrl .. "&assessmentId=" .. assessmentId  )
 end
 
 --creates an brightcenterbutton
@@ -207,12 +218,7 @@ end
 --register for a systemevent when the application is launched it sets all the variables needed to use the controller
 local function onSystemEvent( event )
 	if event.type == "applicationOpen" and event.url then
-		local student = controller.getStudentFromUrl(event.url)
-		local cookie = controller.getCookieFromUrl(event.url)
-		local assessmentId = controller.getAssessmentIdFromUrl(event.url)
-		controller.cookie = cookie
-		controller.student = student
-		controller.assessmentIdFromUrl = assessmentId	
+		handleUrl(event.url)
 		storyboard.gotoScene(controller.sceneToGoTo)
 	end
 end
@@ -226,5 +232,6 @@ controller.getCookieFromUrl = getCookieFromUrl
 controller.loadResults = loadResults
 controller.getAssessmentIdFromUrl = getAssessmentIdFromUrl
 controller.createBrightcenterButton = createBrightcenterButton
+controller.handleUrl = handleUrl
 
 return controller
