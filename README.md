@@ -56,7 +56,19 @@ This method returns a string if something went wrong, so you can print the funct
 -`completionStatus` should be either "COMPLETED" or "INCOMPLETE", you can use controller.completionStatusComplete and controller.completionStatusIncomplete to make sure you send the right values
 
 ###Opening the BrightcenterApp
-This function is not available yet!
+To add the brightcenter button to your screen, call the following piece of code:
+```lua
+buttonGroup = controller.createBrightcenterButton(system.orientation, "assessmentId")
+```
+To handle orientation change you can add the following to your orientation change event:
+
+```lua
+if( storyboard.getCurrentSceneName( ) == "REPLACEWITHYOURCURRENTSCENENAME") then
+	display.remove( buttonGroup )
+	buttonGroup = controller.createBrightcenterButton(e.type, "123-456-789")
+end
+```
+For working examples see the demo code.
 
 ###sidenotes
 
